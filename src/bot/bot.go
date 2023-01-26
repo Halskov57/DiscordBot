@@ -7,16 +7,20 @@ import (
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/dietzy1/discordbot/src/repository"
+
+	stonkclientv1 "github.com/dietzy1/discordbot/src/proto/stonks/v1"
 )
 
 type bot struct {
 	s    *discordgo.Session
 	repo repository.Repository
 	cmd  map[string]commandFn
+
+	client stonkclientv1.StonkServiceClient
 }
 
 // Constructor to inject repo dependency into bot application
-func New(repo repository.Repository) (*bot, error) {
+func New(repo repository.Repository, client stonkclientv1.StonkServiceClient) (*bot, error) {
 	return &bot{repo: repo}, nil
 }
 

@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package stonks.v1;
+
+option go_package = "github.com/dietzy1/discordbot/src/proto/stonks/v1;stonksv1";
+
+service StonkService {
+    rpc GetStonk(GetStonkRequest) returns (GetStonkResponse) {}
+    }
+    
+    
+    
+    message GetStonkRequest {
+        string stonk = 1;
+    }
+    
+    message GetStonkResponse {
+        string error = 1;
+        string stonk = 2;
+        string buyornot = 3;
+    }
+
+
+
+
+
+
+
