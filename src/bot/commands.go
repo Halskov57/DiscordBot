@@ -135,3 +135,15 @@ func (b *bot) leaderboard(ctx context.Context, s *discordgo.Session, i *discordg
 		errorResponse(s, i, err)
 	}
 }
+
+func (b *bot) StonkChecker(){
+	
+}
+
+func (b *bot) BigFluctuation(){
+	
+}
+
+func (b *bot) CompareStrat(){
+	
+}

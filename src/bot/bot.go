@@ -8,7 +8,7 @@ import (
 	"github.com/bwmarrin/discordgo"
 	"github.com/dietzy1/discordbot/src/repository"
 
-	stonkclientv1 "github.com/dietzy1/discordbot/src/proto/stonks/v1"
+	stonkclientv1 "github.com/dietzy1/discordbot/src/proto/stonk/v1"
 )
 
 type bot struct {
@@ -21,7 +21,7 @@ type bot struct {
 
 // Constructor to inject repo dependency into bot application
 func New(repo repository.Repository, client stonkclientv1.StonkServiceClient) (*bot, error) {
-	return &bot{repo: repo}, nil
+	return &bot{repo: repo, client: client}, nil
 }
 
 // Creates a new discord session, registers the handlers, commands and at the end it opens a websocket connection to the discord gateway
