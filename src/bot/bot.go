@@ -6,22 +6,16 @@ import (
 	"os"
 
 	"github.com/bwmarrin/discordgo"
-	"github.com/dietzy1/discordbot/src/repository"
-
-	stonkclientv1 "github.com/dietzy1/discordbot/src/proto/stonk/v1"
 )
 
 type bot struct {
-	s    *discordgo.Session
-	repo repository.Repository
-	cmd  map[string]commandFn
-
-	client stonkclientv1.StonkServiceClient
+	s   *discordgo.Session
+	cmd map[string]commandFn
 }
 
 // Constructor to inject repo dependency into bot application
-func New(repo repository.Repository, client stonkclientv1.StonkServiceClient) (*bot, error) {
-	return &bot{repo: repo, client: client}, nil
+func New() (*bot, error) {
+	return &bot{}, nil
 }
 
 // Creates a new discord session, registers the handlers, commands and at the end it opens a websocket connection to the discord gateway
@@ -70,16 +64,17 @@ func (b *bot) registerHandlers() {
 	b.s.AddHandler(b.emoteHandler)
 	b.s.AddHandler(b.interactionHandler)
 	b.s.AddHandler(b.emoteReactionHandler)
+	b.s.AddHandler(b.helloHandler)
 }
 
 // Aceepts a slice of commands and registers them to the discord api
 func (b *bot) registerCommands(commands []*discordgo.ApplicationCommand) error {
 	log.Println("Adding commands...")
 	registeredCommands := make([]*discordgo.ApplicationCommand, len(commands))
+	guildID := os.Getenv("GUILDID")
 	for i, v := range commands {
-		//Should be left empty to register commands globally, for now its filled with the test server to instantly register
-
-		cmd, err := b.s.ApplicationCommandCreate(os.Getenv("APPID"), "", v)
+		// Register commands globally by leaving the guild ID empty
+		cmd, err := b.s.ApplicationCommandCreate(b.s.State.User.ID, guildID, v)
 		if err != nil {
 			log.Printf("Cannot create '%v' command: %v", v.Name, err)
 			return err
