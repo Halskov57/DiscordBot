@@ -6,9 +6,7 @@ import (
 	"os/signal"
 
 	"github.com/dietzy1/discordbot/src/bot"
-	"github.com/dietzy1/discordbot/src/clients"
 	"github.com/dietzy1/discordbot/src/config"
-	"github.com/dietzy1/discordbot/src/repository"
 )
 
 func main() {
@@ -18,17 +16,8 @@ func main() {
 		log.Fatal(err)
 	}
 
-	//Create a new repository
-	repo, err := repository.New()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	//Initiate the grpc client
-	client := clients.NewStonkClient()
-
 	//Inject repo dependency into bot application
-	bot, err := bot.New(repo, *client)
+	bot, err := bot.New()
 	if err != nil {
 		log.Fatal(err)
 	}
